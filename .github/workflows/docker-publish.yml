@@ -21,7 +21,7 @@ env:
   REGISTRY_DOCKERHUB: docker.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/workspace
+  DOCKERHUB_IMAGE_NAME: streamwise/workspace
 
 
 jobs:
@@ -68,7 +68,7 @@ jobs:
         with:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-            ${{ env.REGISTRY_DOCKERHUB }}/${{ env.IMAGE_NAME }}
+            ${{ env.REGISTRY_DOCKERHUB }}/${{ env.DOCKERHUB_IMAGE_NAME }}
           tags: |
             type=raw,value=latest
             type=ref,event=branch,branch=main
