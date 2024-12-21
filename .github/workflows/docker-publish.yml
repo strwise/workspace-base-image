@@ -60,6 +60,15 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Log into Docker Hub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY_DOCKERHUB }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
@@ -103,26 +112,26 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
-  publish-dockerhub:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  # publish-dockerhub:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Log into Docker Hub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY_DOCKERHUB }}
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Log into Docker Hub
+  #       if: github.event_name != 'pull_request'
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ${{ env.REGISTRY_DOCKERHUB }}
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Pull image from GitHub Container Registry
-        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+  #     - name: Pull image from GitHub Container Registry
+  #       run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
-      - name: Tag image for Docker Hub
-        run: docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest ${{ env.DOCKERHUB_IMAGE_NAME }}:latest
+  #     - name: Tag image for Docker Hub
+  #       run: docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest ${{ env.DOCKERHUB_IMAGE_NAME }}:latest
 
-      - name: Push image to Docker Hub
-        run: docker push ${{ env.DOCKERHUB_IMAGE_NAME }}:latest
+  #     - name: Push image to Docker Hub
+  #       run: docker push ${{ env.DOCKERHUB_IMAGE_NAME }}:latest
