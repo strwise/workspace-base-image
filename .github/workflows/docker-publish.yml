@@ -21,7 +21,7 @@ env:
   REGISTRY_DOCKERHUB: docker.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+  DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/workspace
 
 
 jobs:
