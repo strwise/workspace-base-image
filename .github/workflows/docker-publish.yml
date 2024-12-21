@@ -111,3 +111,16 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+      # Generate an attestation for the build provenance of the Docker image
+      - name: Generate artifact attestation for ${{ env.REGISTRY }}
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.build-and-push.outputs.digest }}
+          push-to-registry: true
+      - name: Generate artifact attestation for docker.io
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ${{ env.DOCKERHUB_IMAGE_NAME }}
+          subject-digest: ${{ steps.build-and-push.outputs.digest }}
+          push-to-registry: true
