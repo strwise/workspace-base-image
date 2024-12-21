@@ -11,7 +11,7 @@ ARG BUILD_DATE
 ARG VERSION
 ARG CODE_RELEASE
 LABEL build_version="StreamWise Workspace version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL org.opencontainers.image.description "StreamWise Workspace Base Image for StreamWise white-label video conferencing platform"
+LABEL org.opencontainers.image.description="StreamWise Workspace Base Image for StreamWise white-label video conferencing platform"
 LABEL maintainer="andrekutianski"
 
 # environment settings
