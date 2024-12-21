@@ -21,6 +21,7 @@ env:
   REGISTRY_DOCKERHUB: docker.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
+  DOCKERHUB_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
 
 
 jobs:
@@ -121,7 +122,7 @@ jobs:
         run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Tag image for Docker Hub
-        run: docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+        run: docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest ${{ env.DOCKERHUB_IMAGE_NAME }}:latest
 
       - name: Push image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+        run: docker push ${{ env.DOCKERHUB_IMAGE_NAME }}:latest
