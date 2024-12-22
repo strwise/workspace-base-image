@@ -123,15 +123,15 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
           push-to-registry: true
-      - name: Log into ${{ env.REGISTRY_DOCKERHUB }}
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
-        with:
-          username: streamwise
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Generate artifact attestation for docker.io
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-name: ${{ env.DOCKERHUB_IMAGE_NAME }}
-          subject-digest: ${{ steps.build-and-push.outputs.digest }}
-          push-to-registry: true
+      # - name: Log into ${{ env.REGISTRY_DOCKERHUB }}
+      #   if: github.event_name != 'pull_request'
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: streamwise
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+      # - name: Generate artifact attestation for docker.io
+      #   uses: actions/attest-build-provenance@v2
+      #   with:
+      #     subject-name: ${{ env.DOCKERHUB_IMAGE_NAME }}
+      #     subject-digest: ${{ steps.build-and-push.outputs.digest }}
+      #     push-to-registry: true
