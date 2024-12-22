@@ -34,6 +34,9 @@ jobs:
       # with sigstore/fulcio when running outside of PRs.
       attestations: write
       id-token: write
+    strategy:
+      matrix:
+        php_version: ["8.1", "8.2", "8.3", "8.4"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -78,6 +81,8 @@ jobs:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             ${{ env.DOCKERHUB_IMAGE_NAME }}
+          flavor: |
+            suffix=-${{ matrix.php_version }}
           tags: |
             type=raw,value=latest
             type=ref,event=branch,branch=main
@@ -88,7 +93,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v5 # v5.0.0
         with:
-          context: .
+          file: Dockerfile-${{ matrix.php_version }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -118,6 +123,12 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.build-and-push.outputs.digest }}
           push-to-registry: true
+      - name: Log into ${{ env.REGISTRY_DOCKERHUB }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          username: streamwise
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Generate artifact attestation for docker.io
         uses: actions/attest-build-provenance@v2
         with:
