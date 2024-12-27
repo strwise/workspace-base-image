@@ -86,12 +86,14 @@ RUN set -eux \
         php8.3-bcmath \
         php8.3-memcached \
         php8.3-gd \
-        php8.3-dev && \
+        php8.3-dev
+
+RUN set -eux && \
     #####################################
     # Composer:
     #####################################
     # create composer HOME
-    mkdir /srv/strwise/composer && \
+    mkdir -p /srv/strwise/composer && \
     # Install composer and add its bin to the PATH.
     curl -s http://getcomposer.org/installer | php && \
     echo "export PATH=${PATH}:/srv/strwise/vendor/bin" >> ~/.bashrc && \
