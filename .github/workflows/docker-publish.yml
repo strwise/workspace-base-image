@@ -21,7 +21,7 @@ env:
   REGISTRY_DOCKERHUB: docker.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-  DOCKERHUB_IMAGE_NAME: streamwise/workspace
+  DOCKERHUB_IMAGE_NAME: streamwise/workspace-base-image
 
 
 jobs:
