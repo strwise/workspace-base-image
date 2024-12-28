@@ -26,7 +26,7 @@ ENV LC_CTYPE=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV TERM=xterm
 
-ENV COMPOSER_HOME=/srv/strwise/composer
+ENV COMPOSER_HOME=/usr/local/composer
 
 # Install runtime dependencies
 RUN set -eux && \
@@ -87,15 +87,15 @@ RUN set -eux \
         php8.2-memcached \
         php8.2-gd \
         php8.2-dev
-RUN set -eux \
+RUN set -eux && \
     #####################################
     # Composer:
     #####################################
     # create composer HOME
-    && mkdir -p /srv/strwise/composer && \
+    mkdir -p ${COMPOSER_HOME} && \
     # Install composer and add its bin to the PATH.
     curl -s http://getcomposer.org/installer | php && \
-    echo "export PATH=${PATH}:/srv/strwise/vendor/bin" >> ~/.bashrc && \
+    echo "export PATH=${PATH}:/usr/local/composer/vendor/bin" >> /etc/bash.bashrc && \
     mv composer.phar /usr/local/bin/composer && \
     printf "StreamWise Workspace version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
     echo "**** clean up ****" && \
