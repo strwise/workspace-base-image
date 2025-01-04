@@ -87,6 +87,7 @@ RUN set -eux \
         php8.2-memcached \
         php8.2-gd \
         php8.2-dev
+
 RUN set -eux && \
     #####################################
     # Composer:
@@ -107,4 +108,4 @@ RUN set -eux && \
     /var/tmp/*
 
 
- 
+ COPY /root /
