@@ -23,6 +23,9 @@ usermod -o -u "$PUID" "$USER_NAME"
 cat /etc/s6-overlay/s6-rc.d/init-adduser/branding
 
 
+
+echo '
+
 ───────────────────────────────────────
 GID/UID
 ───────────────────────────────────────'
