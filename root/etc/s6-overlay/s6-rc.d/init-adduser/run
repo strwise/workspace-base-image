@@ -5,7 +5,7 @@ if [[ ! -f "/usermod.done" ]] && [[ -n "${USER_NAME}" ]] && [[ "${USER_NAME}" !=
     echo "*** USER_NAME cannot be set to an user that already exists in /etc/passwd. Halting init. ***"
     sleep infinity
 else
-    USER_NAME=${USER_NAME:-streamwise}
+    USER_NAME=${USER_NAME:-strwise}
 fi
 
 PUID=${PUID:-911}
